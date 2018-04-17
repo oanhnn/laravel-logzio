@@ -43,8 +43,7 @@ final class LogzioHandler extends AbstractProcessingHandler
         bool $useSSL = true,
         $level = Logger::DEBUG,
         bool $bubble = true
-    )
-    {
+    ) {
         if (!extension_loaded('curl')) {
             throw new LogicException('The curl extension is needed to use the LogzIoHandler');
         }
@@ -55,12 +54,10 @@ final class LogzioHandler extends AbstractProcessingHandler
             ? 'https://listener.logz.io:8071/'
             : 'http://listener.logz.io:8070/';
 
-        $this->endpoint .= '?' . http_build_query(
-                [
-                    'token' => $this->token,
-                    'type' => $this->type,
-                ]
-            );
+        $this->endpoint .= '?' . http_build_query([
+            'token' => $this->token,
+            'type' => $this->type,
+        ]);
 
         parent::__construct($level, $bubble);
     }
