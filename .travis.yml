@@ -1,0 +1,33 @@
+dist: trusty
+sudo: false
+language: php
+
+php:
+  - 7.1
+  - 7.2
+
+env:
+  - ILLUMINATE_VERSION=5.6.*
+
+matrix:
+  fast_finish: true
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+before_install:
+  - travis_retry composer self-update
+  - travis_retry composer require "illuminate/contracts:${ILLUMINATE_VERSION}" --no-update
+  - travis_retry composer require "illuminate/support:${ILLUMINATE_VERSION}" --no-update
+
+install:
+  - travis_retry composer update --no-interaction --prefer-dist $COMPOSER_ARGS
+
+script:
+  - php vendor/bin/phpcs
+  - php vendor/bin/phpunit --coverage-clover=clover.xml
+
+after_success:
+  - travis_retry composer require satooshi/php-coveralls:~1.0
+  - travis_retry php vendor/bin/coveralls --coverage_clover=clover.xml -v
