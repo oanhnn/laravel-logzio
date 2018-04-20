@@ -1,7 +1,7 @@
 # Introduction
 
-[![Build Status](https://travis-ci.org/oanhnn/laravel-flash-message.svg?branch=master)](https://travis-ci.org/oanhnn/laravel-flash-message)
-[![Coverage Status](https://coveralls.io/repos/github/oanhnn/laravel-flash-message/badge.svg?branch=master)](https://coveralls.io/github/oanhnn/laravel-flash-message?branch=master)
+[![Build Status](https://travis-ci.org/oanhnn/laravel-logzio.svg?branch=master)](https://travis-ci.org/oanhnn/laravel-logzio)
+[![Coverage Status](https://coveralls.io/repos/github/oanhnn/laravel-logzio/badge.svg?branch=master)](https://coveralls.io/github/oanhnn/laravel-logzio?branch=master)
 
 Easy integrate [Logz.io](https://logz.io) into [Laravel](https://laravel.com) 5.6+ Application
 
