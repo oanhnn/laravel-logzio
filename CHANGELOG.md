@@ -30,4 +30,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 First release
 
 
-[Unreleased]: https://github.com/oanhnn/laravel-pricing-plans/compare/v0.1.0...develop
+[Unreleased]: https://github.com/oanhnn/laravel-logzio/compare/v0.1.0...develop
