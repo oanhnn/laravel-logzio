@@ -1,10 +1,9 @@
 <?php
 
-namespace Laravel\FlashMessage;
+namespace Laravel\Logzio;
 
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Logzio\LogzioHandler;
 use Monolog\Logger;
 
 class LogzioServiceProvider extends ServiceProvider
