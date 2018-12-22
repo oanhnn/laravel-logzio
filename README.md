@@ -1,7 +1,11 @@
 # Introduction
 
-[![Build Status](https://travis-ci.org/oanhnn/laravel-logzio.svg?branch=master)](https://travis-ci.org/oanhnn/laravel-logzio)
-[![Coverage Status](https://coveralls.io/repos/github/oanhnn/laravel-logzio/badge.svg?branch=master)](https://coveralls.io/github/oanhnn/laravel-logzio?branch=master)
+[![Latest Version](https://img.shields.io/packagist/v/oanhnn/laravel-logzio.svg)](https://packagist.org/packages/oanhnn/laravel-logzio)
+[![Software License](https://img.shields.io/github/license/oanhnn/laravel-logzio.svg)](LICENSE.md)
+[![Build Status](https://img.shields.io/travis/oanhnn/laravel-logzio/master.svg)](https://travis-ci.org/oanhnn/laravel-logzio)
+[![Coverage Status](https://img.shields.io/coveralls/github/oanhnn/laravel-logzio/master.svg)](https://coveralls.io/github/oanhnn/laravel-logzio?branch=master)
+[![Total Downloads](https://img.shields.io/packagist/dt/oanhnn/laravel-logzio.svg)](https://packagist.org/packages/oanhnn/laravel-logzio)
+[![Requires PHP](https://img.shields.io/travis/php-v/oanhnn/laravel-logzio.svg)](https://travis-ci.org/oanhnn/laravel-logzio)
 
 Easy integrate [Logz.io](https://logz.io) into [Laravel](https://laravel.com) 5.6+ Application
 
