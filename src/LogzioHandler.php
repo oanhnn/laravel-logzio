@@ -65,7 +65,7 @@ final class LogzioHandler extends AbstractProcessingHandler
     /**
      * {@inheritdoc}
      */
-    protected function write(array $record)
+    protected function write(array $record): void
     {
         $this->send($record['formatted']);
     }
