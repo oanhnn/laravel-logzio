@@ -27,6 +27,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Nothing
 
 
+## [0.2.0] - 2019-09-07
+
+### Changed
+- Update support for Laravel Framework v6.0
+- Update TravisCI configuration
+- Update PHPUnit configuration
+
+
+
 ## [0.1.2] - 2018-07-18
 
 ### Fixed
@@ -50,6 +59,7 @@ First release
 
 
 
-[Unreleased]: https://github.com/oanhnn/laravel-logzio/compare/v0.1.2...develop
+[Unreleased]: https://github.com/oanhnn/laravel-logzio/compare/v0.2.0...develop
+[0.2.0]:      https://github.com/oanhnn/laravel-logzio/compare/v0.1.2...v0.2.0
 [0.1.2]:      https://github.com/oanhnn/laravel-logzio/compare/v0.1.1...v0.1.2
 [0.1.1]:      https://github.com/oanhnn/laravel-logzio/compare/v0.1.0...v0.1.1
