@@ -18,6 +18,8 @@ Make `logzio` driver for integrate Logz.io into Laravel Application
 * php >=7.1.3
 * Laravel 5.6+
 
+> Laravel 6.0+ required php 7.2+
+
 ## Installation
 
 Begin by pulling in the package through Composer.

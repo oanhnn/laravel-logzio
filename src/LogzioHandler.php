@@ -65,14 +65,6 @@ final class LogzioHandler extends AbstractProcessingHandler
     /**
      * {@inheritdoc}
      */
-    protected function write(array $record)
-    {
-        $this->send($record['formatted']);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function handleBatch(array $records)
     {
         $level = $this->level;
@@ -117,5 +109,13 @@ final class LogzioHandler extends AbstractProcessingHandler
     protected function getDefaultFormatter(): FormatterInterface
     {
         return new LogzioFormatter();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function write(array $record)
+    {
+        $this->send($record['formatted']);
     }
 }

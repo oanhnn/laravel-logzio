@@ -11,14 +11,24 @@ matrix:
       env: LARAVEL='5.6.*' TESTBENCH='3.6.*'
     - php: 7.1
       env: LARAVEL='5.7.*' TESTBENCH='3.7.*'
+    - php: 7.1
+      env: LARAVEL='5.8.*' TESTBENCH='3.8.*'
     - php: 7.2
       env: LARAVEL='5.6.*' TESTBENCH='3.6.*'
     - php: 7.2
-      env: LARAVEL='5.7.*' TESTBENCH='3.7.*' COVERAGE=1
+      env: LARAVEL='5.7.*' TESTBENCH='3.7.*'
+    - php: 7.2
+      env: LARAVEL='5.8.*' TESTBENCH='3.8.*'
+    - php: 7.2
+      env: LARAVEL='6.0.*' TESTBENCH='4.0.*'
     - php: 7.3
       env: LARAVEL='5.6.*' TESTBENCH='3.6.*'
     - php: 7.3
       env: LARAVEL='5.7.*' TESTBENCH='3.7.*'
+    - php: 7.3
+      env: LARAVEL='5.8.*' TESTBENCH='3.8.*'
+    - php: 7.3
+      env: LARAVEL='6.0.*' TESTBENCH='4.0.*' COVERAGE=1
 
 before_install:
   - travis_retry composer self-update
@@ -28,7 +38,7 @@ install:
   - travis_retry composer update --no-interaction --no-suggest --prefer-dist $COMPOSER_ARGS
 
 script:
-  - php vendor/bin/phpcs
+  - php vendor/bin/phpcs --standard=phpcs.xml.dist
   - php vendor/bin/phpunit --coverage-clover=build/logs/clover.xml
 
 after_success:
