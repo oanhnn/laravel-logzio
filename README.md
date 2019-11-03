@@ -44,6 +44,7 @@ return [
 	    'ssl'    => true,
 	    'level'  => 'info',
 	    'bubble' => true,
+	    'region' => 'eu', // leave empty for default region
 	],
 	// ...
 ];

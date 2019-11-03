@@ -35,6 +35,7 @@ final class LogzioHandler extends AbstractProcessingHandler
      * @param bool $useSSL Whether or not SSL encryption should be used.
      * @param int|string $level The minimum logging level to trigger this handler.
      * @param bool $bubble Whether or not messages that are handled should bubble up the stack.
+     * @param string $region Region code provided by Logz.io (see https://docs.logz.io/user-guide/accounts/account-region.html).
      * @throws \LogicException If curl extension is not available.
      */
     public function __construct(
@@ -42,17 +43,20 @@ final class LogzioHandler extends AbstractProcessingHandler
         string $type = 'http-bulk',
         bool $useSSL = true,
         $level = Logger::DEBUG,
-        bool $bubble = true
+        bool $bubble = true,
+        string $region = ''
     ) {
         if (!extension_loaded('curl')) {
             throw new LogicException('The curl extension is needed to use the LogzIoHandler');
         }
 
+        $listener_domain = strlen($region) > 0 ? 'listener-' .$region. '.logz.io' : 'listener.logz.io';
+
         $this->token = $token;
         $this->type = $type;
         $this->endpoint = $useSSL
-            ? 'https://listener.logz.io:8071/'
-            : 'http://listener.logz.io:8070/';
+            ? 'https://' .$listener_domain. ':8071/'
+            : 'http://' .$listener_domain. ':8070/';
 
         $this->endpoint .= '?' . http_build_query([
             'token' => $this->token,

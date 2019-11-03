@@ -28,7 +28,8 @@ class LogzioServiceProvider extends ServiceProvider
                 $config['type'] ?? 'http-bulk',
                 $config['ssl'] ?? true,
                 $config['level'] ?? Logger::WARNING,
-                $config['bubble'] ?? true
+                $config['bubble'] ?? true,
+                $config['region'] ?? '' // https://docs.logz.io/user-guide/accounts/account-region.html
             );
             return new Logger($config['name'], [$handler]);
         });
