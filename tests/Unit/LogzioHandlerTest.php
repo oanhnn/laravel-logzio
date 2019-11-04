@@ -19,8 +19,8 @@ class LogzioHandlerTest extends TestCase
      */
     public function testItShouldThowExceptionWhenMissingTokenParameter()
     {
-        $this->expectedException(LogicException::class);
-        $this->expectedExceptionMessage('The token parameter is required to use the Logz.io Handler');
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('The token parameter is required to use the Logz.io Handler');
 
         new Handler('debug', true, ['ssl' => true]);
     }
