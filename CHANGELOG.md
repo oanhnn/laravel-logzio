@@ -27,10 +27,36 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Nothing
 
 
+
+
+## [1.0.0] - 2019-11-04
+
+### Added
+- Add support `region`, thank @cschalenborgh
+
+### Changed
+- Rename class `Laravel\Logzio\LogzioFormatter` to `Laravel\Logzio\Log\Formatter`
+- Rename class `Laravel\Logzio\LogzioHandler` to `Laravel\Logzio\Log\Handler`
+- Refactor test scripts
+
+
+
+
+## [0.2.0] - 2019-09-07
+
+### Changed
+- Update support for Laravel Framework v6.0
+- Update TravisCI configuration
+- Update PHPUnit configuration
+
+
+
+
 ## [0.1.2] - 2018-07-18
 
 ### Fixed
 - Missing class `Laravel\Logzio\LogzioServiceProvider`
+
 
 
 
@@ -44,12 +70,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 
 
+
 ## 0.1.0 - 2018-04-17
 
 First release
 
 
 
-[Unreleased]: https://github.com/oanhnn/laravel-logzio/compare/v0.1.2...develop
+[Unreleased]: https://github.com/oanhnn/laravel-logzio/compare/v1.0.0...develop
+[1.0.0]:      https://github.com/oanhnn/laravel-logzio/compare/v0.2.0...v1.0.0
+[0.2.0]:      https://github.com/oanhnn/laravel-logzio/compare/v0.1.2...v0.2.0
 [0.1.2]:      https://github.com/oanhnn/laravel-logzio/compare/v0.1.1...v0.1.2
 [0.1.1]:      https://github.com/oanhnn/laravel-logzio/compare/v0.1.0...v0.1.1

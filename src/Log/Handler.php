@@ -2,6 +2,7 @@
 
 namespace Laravel\Logzio\Log;
 
+use Illuminate\Support\Arr;
 use LogicException;
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Handler\AbstractProcessingHandler;
@@ -23,57 +24,23 @@ final class Handler extends AbstractProcessingHandler
     /**
      * @var string
      */
-    private $token;
-
-    /**
-     * @var string
-     */
-    private $type;
-
-    /**
-     * @var string
-     */
     private $endpoint;
 
     /**
-     * @param string $token Log token supplied by Logz.io.
-     * @param string $type Host name supplied by Logz.io.
-     * @param bool $useSSL Whether or not SSL encryption should be used.
-     * @param int|string $level The minimum logging level to trigger this handler.
-     * @param bool $bubble Whether or not messages that are handled should bubble up the stack.
+     * @param  string $level   The minimum logging level to trigger this handler.
+     * @param  bool   $bubble  Whether or not messages that are handled should bubble up the stack.
+     * @param  array  $options Logz.io client options
      * @throws \LogicException If curl extension is not available.
      */
-    public function __construct(
-        string $token,
-        string $type = 'http-bulk',
-        bool $useSSL = true,
-        $level = Logger::DEBUG,
-        bool $bubble = true
-    ) {
+    public function __construct(string $level = Logger::DEBUG, bool $bubble = true, array $options = [])
+    {
         if (!extension_loaded('curl')) {
             throw new LogicException('The curl extension is needed to use the LogzIoHandler');
         }
 
-        $this->token = $token;
-        $this->type = $type;
-        $this->endpoint = $useSSL
-            ? 'https://listener.logz.io:8071/'
-            : 'http://listener.logz.io:8070/';
-
-        $this->endpoint .= '?' . http_build_query([
-            'token' => $this->token,
-            'type' => $this->type,
-        ]);
+        $this->endpoint = $this->buildEndpoint($options);
 
         parent::__construct($level, $bubble);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function write(array $record)
-    {
-        $this->send($record['formatted']);
     }
 
     /**
@@ -89,11 +56,16 @@ final class Handler extends AbstractProcessingHandler
             }
         );
         if ($records) {
-            $this->send(
-                $this->getFormatter()
-                    ->formatBatch($records)
-            );
+            $this->send($this->getFormatter()->formatBatch($records));
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function write(array $record)
+    {
+        $this->send($record['formatted']);
     }
 
     /**
@@ -123,5 +95,45 @@ final class Handler extends AbstractProcessingHandler
     protected function getDefaultFormatter(): FormatterInterface
     {
         return new Formatter();
+    }
+
+    /**
+     * Build listener endpoint
+     *
+     * @param  array $options
+     * @return string
+     */
+    protected function buildEndpoint(array $options = []): string
+    {
+        $region = Arr::pull($options, 'region', '');
+        $useSsl = Arr::pull($options, 'ssl', true);
+
+        $endpoint = sprintf(
+            '%s://listener%s.logz.io:%d',
+            $useSsl ? 'https' : 'http',
+            $this->validRegion($region) ? "-$region" : '',
+            $useSsl ? 8071 : 8070
+        );
+
+        $endpoint .= '?' . http_build_query($options);
+
+        return $endpoint;
+    }
+
+    /**
+     * Validate region
+     *
+     * @param  string $region
+     * @return bool
+     */
+    protected function validRegion(string $region): bool
+    {
+        return in_array($region, [
+            'au', // Asia Pacific (Sydney) AWS
+            'ca', // Canada (Central) AWS
+            'eu', // Europe (Frankfurt) AWS
+            'nl', // West Europe (Netherlands) Azure
+            'wa', // West US 2 (Washington) Azure
+        ]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Laravel\Logzio;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 use Laravel\Logzio\Log\Handler;
@@ -24,13 +25,20 @@ class ServiceProvider extends IlluminateServiceProvider
     public function boot()
     {
         Log::extend('logzio', function ($app, array $config) {
+            // $config = [
+            //     'level' => Logger::WARNING,
+            //     'bubble' => true,
+            //     'token' => '...',
+            //     'type' => 'http-bulk',
+            //     'ssl' => true,
+            //     'region' => '',
+            // ];
             $handler = new Handler(
-                $config['token'],
-                $config['type'] ?? 'http-bulk',
-                $config['ssl'] ?? true,
-                $config['level'] ?? Logger::WARNING,
-                $config['bubble'] ?? true
+                Arr::pull($config, 'level', Logger::WARNING),
+                Arr::pull($config, 'bubble', true),
+                $config
             );
+
             return new Logger($config['name'], [$handler]);
         });
     }
