@@ -3,10 +3,11 @@
 namespace Laravel\Logzio;
 
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
+use Laravel\Logzio\Log\Handler;
 use Monolog\Logger;
 
-class LogzioServiceProvider extends ServiceProvider
+class ServiceProvider extends IlluminateServiceProvider
 {
     /**
      * Indicates if loading of the provider is deferred.
@@ -23,7 +24,7 @@ class LogzioServiceProvider extends ServiceProvider
     public function boot()
     {
         Log::extend('logzio', function ($app, array $config) {
-            $handler = new LogzioHandler(
+            $handler = new Handler(
                 $config['token'],
                 $config['type'] ?? 'http-bulk',
                 $config['ssl'] ?? true,

@@ -1,6 +1,6 @@
 <?php
 
-namespace Laravel\Logzio;
+namespace Laravel\Logzio\Log;
 
 use LogicException;
 use Monolog\Formatter\FormatterInterface;
@@ -9,10 +9,16 @@ use Monolog\Handler\Curl\Util;
 use Monolog\Logger;
 
 /**
+ * Class Handler
+ *
+ * @package     Laravel\Logzio\Log
+ * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
+ * @license     The MIT license
+ *
  * @see    https://support.logz.io/hc/en-us/categories/201158705-Log-Shipping
  * @see    https://app.logz.io/#/dashboard/data-sources/Bulk-HTTPS
  */
-final class LogzioHandler extends AbstractProcessingHandler
+final class Handler extends AbstractProcessingHandler
 {
     /**
      * @var string
@@ -65,6 +71,14 @@ final class LogzioHandler extends AbstractProcessingHandler
     /**
      * {@inheritdoc}
      */
+    protected function write(array $record)
+    {
+        $this->send($record['formatted']);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function handleBatch(array $records)
     {
         $level = $this->level;
@@ -108,14 +122,6 @@ final class LogzioHandler extends AbstractProcessingHandler
      */
     protected function getDefaultFormatter(): FormatterInterface
     {
-        return new LogzioFormatter();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function write(array $record)
-    {
-        $this->send($record['formatted']);
+        return new Formatter();
     }
 }

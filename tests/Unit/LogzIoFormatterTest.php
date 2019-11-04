@@ -1,57 +1,57 @@
 <?php
 
-namespace Laravel\Logzio\Tests\Unit;
+namespace Tests\Unit;
 
-use Laravel\Logzio\LogzioFormatter;
+use Laravel\Logzio\Log\Formatter;
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
 
 class LogzioFormatterTest extends TestCase
 {
     /**
-     * @covers \Laravel\Logzio\LogzioFormatter::__construct()
+     * @covers \Laravel\Logzio\Formatter::__construct()
      */
-    public function testConstruct()
+    public function testItBeConstructed()
     {
         // Case default parameters
-        $formatter = new LogzioFormatter();
+        $formatter = new Formatter();
 
-        $this->assertEquals(LogzioFormatter::BATCH_MODE_NEWLINES, $formatter->getBatchMode());
+        $this->assertEquals(Formatter::BATCH_MODE_NEWLINES, $formatter->getBatchMode());
         $this->assertEquals(true, $formatter->isAppendingNewlines());
 
         // Case custom parameters
-        $formatter = new LogzioFormatter(LogzioFormatter::BATCH_MODE_JSON, false);
+        $formatter = new Formatter(Formatter::BATCH_MODE_JSON, false);
 
-        $this->assertEquals(LogzioFormatter::BATCH_MODE_JSON, $formatter->getBatchMode());
+        $this->assertEquals(Formatter::BATCH_MODE_JSON, $formatter->getBatchMode());
         $this->assertEquals(false, $formatter->isAppendingNewlines());
     }
 
     /**
-     * @covers \Laravel\Logzio\LogzioFormatter::format()
+     * @covers \Laravel\Logzio\Formatter::format()
      */
-    public function testFormat()
+    public function testItShouldFormatLog()
     {
         // Case default parameters
-        $formatter = new LogzioFormatter();
+        $formatter = new Formatter();
         $record = $this->getRecord();
-        $formatted_decoded = json_decode($formatter->format($record), true);
+        $formatted = json_decode($formatter->format($record), true);
 
-        static::assertArrayHasKey('@timestamp', $formatted_decoded);
-        static::assertArrayNotHasKey('datetime', $formatted_decoded);
+        $this->assertArrayHasKey('@timestamp', $formatted);
+        $this->assertArrayNotHasKey('datetime', $formatted);
 
         // Case custom parameters
-        $formatter = new LogzioFormatter(LogzioFormatter::BATCH_MODE_NEWLINES, false);
+        $formatter = new Formatter(Formatter::BATCH_MODE_NEWLINES, false);
         $record = $this->getRecord();
-        $formatted_decoded = json_decode($formatter->format($record), true);
+        $formatted = json_decode($formatter->format($record), true);
 
-        static::assertArrayHasKey('@timestamp', $formatted_decoded);
-        static::assertArrayNotHasKey('datetime', $formatted_decoded);
+        $this->assertArrayHasKey('@timestamp', $formatted);
+        $this->assertArrayNotHasKey('datetime', $formatted);
     }
 
     /**
-     * @return array Record
+     * @return array
      */
-    protected function getRecord($level = Logger::WARNING, $message = 'test', $context = [])
+    protected function getRecord($level = Logger::WARNING, $message = 'test', $context = []): array
     {
         return [
             'message' => $message,

@@ -1,12 +1,25 @@
 <?php
 
-namespace Laravel\Logzio\Tests;
+namespace Tests;
 
-use Laravel\Logzio\LogzioServiceProvider;
+use Laravel\Logzio\ServiceProvider;
 use Orchestra\Testbench\TestCase as Testbench;
 
 class TestCase extends Testbench
 {
+    /**
+     * Get Laraplans package service provider.
+     *
+     * @param  \Illuminate\Foundation\Application $app
+     * @return array
+     */
+    public function getPackageProviders($app)
+    {
+        return [
+            ServiceProvider::class,
+        ];
+    }
+
     /**
      * Define environment setup.
      *
@@ -17,18 +30,5 @@ class TestCase extends Testbench
     {
         // Set user model
         $app['config']->set('session.driver', 'array');
-    }
-
-    /**
-     * Get Laraplans package service provider.
-     *
-     * @param  \Illuminate\Foundation\Application $app
-     * @return array
-     */
-    public function getPackageProviders($app)
-    {
-        return [
-            LogzioServiceProvider::class,
-        ];
     }
 }

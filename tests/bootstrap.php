@@ -8,4 +8,4 @@ date_default_timezone_set('UTC');
 $autoloader = require dirname(__DIR__) . '/vendor/autoload.php';
 
 // Register test classes
-$autoloader->addPsr4('Laravel\\Logzio\\Tests\\', __DIR__);
+$autoloader->addPsr4('Tests\\', __DIR__);

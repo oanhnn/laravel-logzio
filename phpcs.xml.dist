@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ruleset name="My coding standard">
+<ruleset
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="vendor/squizlabs/php_codesniffer/phpcs.xsd"
+    name="My coding standard"
+>
     <description>My coding standard</description>
 
-    <!-- display progress -->
     <arg value="p"/>
-    <!-- use colors in output -->
     <arg name="colors"/>
 
-    <!-- inherit rules from: -->
     <rule ref="PSR2"/>
     <rule ref="Generic.PHP.DeprecatedFunctions"/>
     <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
-    <!--<rule ref="Squiz.Commenting.FileComment"/>-->
-    <!--<rule ref="Generic.Commenting.Todo" />-->
 
     <!-- The soft limit on line length MUST be 120 characters;
     automated style checkers MUST warn but MUST NOT error at the soft limit. -->
@@ -36,12 +35,6 @@
     <rule ref="PSR1.Classes.ClassDeclaration">
         <exclude-pattern>tests/bootstrap.php</exclude-pattern>
     </rule>
-
-    <!--
-    <rule ref="PSR1.Files.SideEffects">
-        <exclude-pattern>test/bootstrap.php</exclude-pattern>
-    </rule>
-    -->
 
     <!-- Paths to check -->
     <file>src</file>

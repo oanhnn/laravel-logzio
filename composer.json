@@ -40,9 +40,18 @@
     "squizlabs/php_codesniffer": "^3.2"
   },
   "scripts": {
-    "phpunit": "php vendor/phpunit/phpunit/phpunit --coverage-html storage/coverage",
-    "phpcs": "php vendor/squizlabs/php_codesniffer/bin/phpcs",
-    "phpcbf": "php vendor/squizlabs/php_codesniffer/bin/phpcbf"
+    "test": [
+      "@php vendor/phpunit/phpunit/phpunit --testdox --testsuite=Tests"
+    ],
+    "coverage": [
+      "@php vendor/phpunit/phpunit/phpunit --coverage-html storage/coverage --testsuite=Tests"
+    ],
+    "cs-check": [
+      "@php vendor/squizlabs/php_codesniffer/bin/phpcs --standard=phpcs.xml.dist"
+    ],
+    "cs-fix": [
+      "@php vendor/squizlabs/php_codesniffer/bin/phpcbf --standard=phpcs.xml.dist"
+    ]
   },
   "config": {
     "preferred-install": "dist",

@@ -6,11 +6,13 @@
 /vendor
 /build
 /storage
+/.phpunit.result.cache
 
 # IDE and editor specific files #
 #################################
 /nbproject
 /.idea
+/.vscode
 
 # OS generated files #
 ######################

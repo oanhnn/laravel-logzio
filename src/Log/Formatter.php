@@ -1,14 +1,22 @@
 <?php
 
-namespace Laravel\Logzio;
+namespace Laravel\Logzio\Log;
 
+use DateTimeInterface;
 use Monolog\Formatter\JsonFormatter;
 
-class LogzioFormatter extends JsonFormatter
+/**
+ * Class Formatter
+ *
+ * @package     Laravel\Logzio\Log
+ * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
+ * @license     The MIT license
+ */
+class Formatter extends JsonFormatter
 {
     /**
      * Datetime format for Logz.io
-     * @see https://support.logz.io/hc/en-us/articles/210206885-How-can-I-get-Logz-io-to-read-the-timestamp-within-a-JSON-log-
+     * @see https://support.logz.io/hc/en-us/articles/210206885
      */
     const DATETIME_FORMAT = 'c';
 
@@ -29,8 +37,9 @@ class LogzioFormatter extends JsonFormatter
      */
     public function format(array $record): string
     {
-        if (isset($record["datetime"]) && ($record["datetime"] instanceof \DateTimeInterface)) {
+        if (isset($record["datetime"]) && ($record["datetime"] instanceof DateTimeInterface)) {
             $record["@timestamp"] = $record["datetime"]->format(self::DATETIME_FORMAT);
+
             unset($record["datetime"]);
         }
 

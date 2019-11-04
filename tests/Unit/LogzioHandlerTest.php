@@ -1,23 +1,25 @@
 <?php
 
-namespace Laravel\Logzio\Tests\Unit;
+namespace Tests\Unit;
 
-use Laravel\Logzio\LogzioFormatter;
-use Laravel\Logzio\LogzioHandler;
+use Laravel\Logzio\Log\Formatter;
+use Laravel\Logzio\Log\Handler;
 use PHPUnit\Framework\TestCase;
 
 class LogzioHandlerTest extends TestCase
 {
     /**
-     * @covers \Laravel\Logzio\LogzioHandler::getDefaultFormatter()
+     * @covers \Laravel\Logzio\Log\Handler::getDefaultFormatter()
      */
-    public function testGetDefaultFormatter()
+    public function testItShouldProvidersDefaultFormatter()
     {
-        $handler = new LogzioHandler('dumy');
+        $handler = new Handler('dumy');
         $defaultFormatter = $handler->getFormatter();
 
-        static::assertTrue($defaultFormatter instanceof LogzioFormatter);
-        static::assertTrue($defaultFormatter->isAppendingNewlines());
-        static::assertSame(LogzioFormatter::BATCH_MODE_NEWLINES, $defaultFormatter->getBatchMode());
+        $this->assertInstanceOf(Formatter::class, $defaultFormatter);
+
+        // Test default formatter be created with default parameters
+        $this->assertTrue($defaultFormatter->isAppendingNewlines());
+        $this->assertEquals(Formatter::BATCH_MODE_NEWLINES, $defaultFormatter->getBatchMode());
     }
 }

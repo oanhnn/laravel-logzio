@@ -21,6 +21,14 @@ matrix:
       env: LARAVEL='5.8.*' TESTBENCH='3.8.*'
     - php: 7.2
       env: LARAVEL='6.0.*' TESTBENCH='4.0.*'
+    - php: 7.2
+      env: LARAVEL='6.1.*' TESTBENCH='4.1.*'
+    - php: 7.2
+      env: LARAVEL='6.2.*' TESTBENCH='4.2.*'
+    - php: 7.2
+      env: LARAVEL='6.3.*' TESTBENCH='4.2.*'
+    - php: 7.2
+      env: LARAVEL='6.4.*' TESTBENCH='4.3.*'
     - php: 7.3
       env: LARAVEL='5.6.*' TESTBENCH='3.6.*'
     - php: 7.3
@@ -28,7 +36,15 @@ matrix:
     - php: 7.3
       env: LARAVEL='5.8.*' TESTBENCH='3.8.*'
     - php: 7.3
-      env: LARAVEL='6.0.*' TESTBENCH='4.0.*' COVERAGE=1
+      env: LARAVEL='6.0.*' TESTBENCH='4.0.*'
+    - php: 7.3
+      env: LARAVEL='6.1.*' TESTBENCH='4.1.*'
+    - php: 7.3
+      env: LARAVEL='6.2.*' TESTBENCH='4.2.*'
+    - php: 7.3
+      env: LARAVEL='6.3.*' TESTBENCH='4.2.*'
+    - php: 7.3
+      env: LARAVEL='6.4.*' TESTBENCH='4.3.*' COVERAGE=1
 
 before_install:
   - travis_retry composer self-update
