@@ -27,15 +27,15 @@ final class Handler extends AbstractProcessingHandler
     private $endpoint;
 
     /**
-     * @param  string $level   The minimum logging level to trigger this handler.
-     * @param  bool   $bubble  Whether or not messages that are handled should bubble up the stack.
-     * @param  array  $options Logz.io client options
+     * @param  int|string $level   The minimum logging level to trigger this handler.
+     * @param  bool       $bubble  Whether or not messages that are handled should bubble up the stack.
+     * @param  array      $options Logz.io client options
      * @throws \LogicException If curl extension is not available.
      */
-    public function __construct(string $level = Logger::DEBUG, bool $bubble = true, array $options = [])
+    public function __construct($level = Logger::DEBUG, bool $bubble = true, array $options = [])
     {
-        if (!extension_loaded('curl')) {
-            throw new LogicException('The curl extension is needed to use the LogzIoHandler');
+        if (empty($options['token'])) {
+            throw new LogicException('The token parameter is required to use the Logz.io Handler');
         }
 
         $this->endpoint = $this->buildEndpoint($options);
@@ -105,8 +105,8 @@ final class Handler extends AbstractProcessingHandler
      */
     protected function buildEndpoint(array $options = []): string
     {
-        $region = Arr::pull($options, 'region', '');
-        $useSsl = Arr::pull($options, 'ssl', true);
+        $region = Arr::get($options, 'region', '');
+        $useSsl = Arr::get($options, 'ssl', true);
 
         $endpoint = sprintf(
             '%s://listener%s.logz.io:%d',
@@ -115,7 +115,7 @@ final class Handler extends AbstractProcessingHandler
             $useSsl ? 8071 : 8070
         );
 
-        $endpoint .= '?' . http_build_query($options);
+        $endpoint .= '?' . http_build_query(Arr::only($options, ['token', 'type']));
 
         return $endpoint;
     }

@@ -19,7 +19,6 @@ class ServiceProviderTest extends TestCase
      * Test make log driver
      *
      * @return void
-     * @covers \Laravel\Logzio\ServiceProvider::boot()
      */
     public function testItShouldProvidesLogDriver()
     {

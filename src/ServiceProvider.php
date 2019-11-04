@@ -34,8 +34,8 @@ class ServiceProvider extends IlluminateServiceProvider
             //     'region' => '',
             // ];
             $handler = new Handler(
-                Arr::pull($config, 'level', Logger::WARNING),
-                Arr::pull($config, 'bubble', true),
+                Arr::get($config, 'level', Logger::WARNING),
+                Arr::get($config, 'bubble', true),
                 $config
             );
 

@@ -21,8 +21,8 @@ class Formatter extends JsonFormatter
     const DATETIME_FORMAT = 'c';
 
     /**
-     * @param int $batchMode
-     * @param bool $appendNewline
+     * @param  int  $batchMode
+     * @param  bool $appendNewline
      */
     public function __construct(int $batchMode = self::BATCH_MODE_NEWLINES, bool $appendNewline = true)
     {
@@ -32,7 +32,7 @@ class Formatter extends JsonFormatter
     /**
      * Appends the '@timestamp' parameter for Logz.io.
      *
-     * @param array $record
+     * @param  array  $record
      * @return string
      */
     public function format(array $record): string
