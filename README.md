@@ -11,7 +11,7 @@ Easy integrate [Logz.io](https://logz.io) into PHP and [Laravel](https://laravel
 
 ## Main features
 
-- [x] Make Logz.io handler for [monplog](https://packagist.org/packages/monolog/monolog)
+- [x] Make Logz.io handler for [Monolog](https://packagist.org/packages/monolog/monolog)
 - [x] Make `logzio` driver for integrate Logz.io into Laravel Application
 
 ## Requirements
