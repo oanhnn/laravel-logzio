@@ -62,7 +62,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Laravel\\Logzio\\LogzioServiceProvider"
+        "Laravel\\Logzio\\ServiceProvider"
       ]
     }
   }
