@@ -7,16 +7,17 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/oanhnn/laravel-logzio.svg)](https://packagist.org/packages/oanhnn/laravel-logzio)
 [![Requires PHP](https://img.shields.io/travis/php-v/oanhnn/laravel-logzio.svg)](https://travis-ci.org/oanhnn/laravel-logzio)
 
-Easy integrate [Logz.io](https://logz.io) into [Laravel](https://laravel.com) 5.6+ Application
+Easy integrate [Logz.io](https://logz.io) into PHP and [Laravel](https://laravel.com) 5.6+ Application
 
 ## Main features
 
-Make `logzio` driver for integrate Logz.io into Laravel Application
+- [x] Make Logz.io handler for [monplog](https://packagist.org/packages/monolog/monolog)
+- [x] Make `logzio` driver for integrate Logz.io into Laravel Application
 
 ## Requirements
 
 * php >=7.1.3
-* Laravel 5.6+
+* Laravel 5.6+ (when using with Laravel)
 
 > Laravel 6.0+ required php 7.2+
 
@@ -29,6 +30,29 @@ $ composer require oanhnn/laravel-logzio
 ```
 
 ## Usage
+
+### PHP (non Laravel)
+
+```php
+<?php
+
+use Laravel\Logzio\Log\Handler;
+use Monolog\Logger;
+
+$config = [
+    'token' => '...',
+    'type' => 'http-bulk',
+    'ssl' => true,
+    'region' => '',
+];
+
+$logger = new Logger('log-name');
+$logger->pushHandler(new Handler(Logger::DEBUG, true, $config);
+
+$logger->info('Some message');
+```
+
+### Laravel
 
 In `config/logging.php` file, config you log with driver `logzio`
 

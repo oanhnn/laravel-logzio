@@ -29,12 +29,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 
 
-## [1.0.0] - 2019-11-04
+## [1.0.0] - 2019-11-05
 
 ### Added
+- Add support PHP application (non Laravel)
 - Add support `region`, thank @cschalenborgh
 
 ### Changed
+- Using `GuzzleHttp/Guzzle` package instead of `ext-curl`
 - Rename class `Laravel\Logzio\LogzioFormatter` to `Laravel\Logzio\Log\Formatter`
 - Rename class `Laravel\Logzio\LogzioHandler` to `Laravel\Logzio\Log\Handler`
 - Refactor test scripts

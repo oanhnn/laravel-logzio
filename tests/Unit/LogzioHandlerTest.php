@@ -2,14 +2,17 @@
 
 namespace Tests\Unit;
 
+use GuzzleHttp\Client;
 use Laravel\Logzio\Log\Formatter;
 use Laravel\Logzio\Log\Handler;
 use LogicException;
 use PHPUnit\Framework\TestCase;
+use Tests\Concerns\CanProvideLogRecord;
 use Tests\Concerns\NonPublicAccessible;
 
 class LogzioHandlerTest extends TestCase
 {
+    use CanProvideLogRecord;
     use NonPublicAccessible;
 
     /**
@@ -57,6 +60,41 @@ class LogzioHandlerTest extends TestCase
         // Test default formatter be created with default parameters
         $this->assertTrue($defaultFormatter->isAppendingNewlines());
         $this->assertEquals(Formatter::BATCH_MODE_NEWLINES, $defaultFormatter->getBatchMode());
+    }
+
+    /**
+     * Test it should handle a log record
+     *
+     * @return void
+     */
+    public function testItShouldHandleARecord()
+    {
+        $client = $this->createMock(Client::class);
+        $client->expects($this->once())->method('sendAsync');
+
+        $handler = new Handler('debug', false, ['token' => 'abc', 'http_client' => $client]);
+        $handler->handle($this->logRecord());
+    }
+
+    /**
+     * Test it should handle a log record
+     *
+     * @return void
+     */
+    public function testItShouldHandleBatch()
+    {
+        $client = $this->createMock(Client::class);
+        $client->expects($this->once())->method('sendAsync');
+
+        $handler = new Handler('notice', false, ['token' => 'abc', 'http_client' => $client]);
+        $handler->handleBatch([
+            $this->logRecord('DEBUG', 'test 01'),
+            $this->logRecord('INFO', 'test 02'),
+            $this->logRecord('alert', 'test 03'),
+            $this->logRecord('warning', 'test 04'),
+            $this->logRecord('error', 'test 05'),
+            $this->logRecord('critical', 'test 06'),
+        ]);
     }
 
     /**

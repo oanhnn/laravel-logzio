@@ -2,7 +2,6 @@
 
 namespace Laravel\Logzio;
 
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 use Laravel\Logzio\Log\Handler;
@@ -34,12 +33,12 @@ class ServiceProvider extends IlluminateServiceProvider
             //     'region' => '',
             // ];
             $handler = new Handler(
-                Arr::get($config, 'level', Logger::WARNING),
-                Arr::get($config, 'bubble', true),
+                $config['level'] ?? 'warning',
+                $config['bubble'] ?? true,
                 $config
             );
 
-            return new Logger($config['name'], [$handler]);
+            return new Logger($config['name'] ?? $app->environment(), [$handler]);
         });
     }
 }

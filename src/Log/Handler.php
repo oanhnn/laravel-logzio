@@ -2,11 +2,12 @@
 
 namespace Laravel\Logzio\Log;
 
-use Illuminate\Support\Arr;
+use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Psr7\Request;
 use LogicException;
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Handler\AbstractProcessingHandler;
-use Monolog\Handler\Curl\Util;
 use Monolog\Logger;
 
 /**
@@ -21,6 +22,13 @@ use Monolog\Logger;
  */
 final class Handler extends AbstractProcessingHandler
 {
+    /**
+     * The HTTP client
+     *
+     * @var \GuzzleHttp\ClientInterface
+     */
+    private $client;
+
     /**
      * @var string
      */
@@ -38,6 +46,7 @@ final class Handler extends AbstractProcessingHandler
             throw new LogicException('The token parameter is required to use the Logz.io Handler');
         }
 
+        $this->client = $this->buildHttpClient($options);
         $this->endpoint = $this->buildEndpoint($options);
 
         parent::__construct($level, $bubble);
@@ -48,45 +57,62 @@ final class Handler extends AbstractProcessingHandler
      */
     public function handleBatch(array $records)
     {
-        $level = $this->level;
-        $records = array_filter(
-            $records,
-            function (array $record) use ($level): bool {
-                return ($record['level'] >= $level);
+        $processed = [];
+
+        foreach ($records as $record) {
+            if ($this->isHandling($record)) {
+                $processed[] = $this->processRecord($record);
             }
-        );
-        if ($records) {
-            $this->send($this->getFormatter()->formatBatch($records));
+        }
+
+        if (!empty($processed)) {
+            $this->send($this->getFormatter()->formatBatch($processed));
         }
     }
 
     /**
-     * {@inheritdoc}
+     * Build listener endpoint
+     *
+     * @param  array $options
+     * @return string
      */
-    protected function write(array $record)
+    protected function buildEndpoint(array $options = []): string
     {
-        $this->send($record['formatted']);
+        $region = $options['region'] ?? '';
+        $useSsl = $options['ssl'] ?? true;
+
+        $endpoint = sprintf(
+            '%s://listener%s.logz.io:%d',
+            $useSsl ? 'https' : 'http',
+            $this->validRegion($region) ? "-$region" : '',
+            $useSsl ? 8071 : 8070
+        );
+
+        $endpoint .= '?' . http_build_query(array_filter([
+            'token' => $options['token'] ?? null,
+            'type' => $options['type'] ?? null,
+        ]));
+
+        return $endpoint;
     }
 
     /**
-     * Send logging data to server
+     * Build HTTP client
      *
-     * @param mixed $data
-     * @return void
+     * @param  array $options
+     * @return ClientInterface
      */
-    protected function send($data)
+    protected function buildHttpClient(array $options): ClientInterface
     {
-        $headers = ['Content-Type: application/json'];
+        if (isset($options['http_client']) && $options['http_client'] instanceof ClientInterface) {
+            return $options['http_client'];
+        }
 
-        $ch = curl_init();
-
-        curl_setopt($ch, CURLOPT_URL, $this->endpoint);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-        Util::execute($ch, 3);
+        return new Client([
+            'headers' => [
+                'User-Agent' => 'laravel-logzio',
+            ],
+        ]);
     }
 
     /**
@@ -98,26 +124,17 @@ final class Handler extends AbstractProcessingHandler
     }
 
     /**
-     * Build listener endpoint
+     * Send logging data to server
      *
-     * @param  array $options
-     * @return string
+     * @param mixed $data
+     * @return void
      */
-    protected function buildEndpoint(array $options = []): string
+    protected function send($data)
     {
-        $region = Arr::get($options, 'region', '');
-        $useSsl = Arr::get($options, 'ssl', true);
+        $headers = ['Content-Type: application/json'];
+        $request = new Request('POST', $this->endpoint, $headers, $data);
 
-        $endpoint = sprintf(
-            '%s://listener%s.logz.io:%d',
-            $useSsl ? 'https' : 'http',
-            $this->validRegion($region) ? "-$region" : '',
-            $useSsl ? 8071 : 8070
-        );
-
-        $endpoint .= '?' . http_build_query(Arr::only($options, ['token', 'type']));
-
-        return $endpoint;
+        $this->client->sendAsync($request);
     }
 
     /**
@@ -135,5 +152,13 @@ final class Handler extends AbstractProcessingHandler
             'nl', // West Europe (Netherlands) Azure
             'wa', // West US 2 (Washington) Azure
         ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function write(array $record)
+    {
+        $this->send($record['formatted']);
     }
 }
