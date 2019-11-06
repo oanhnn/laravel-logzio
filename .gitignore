@@ -1,18 +1,18 @@
 # User specific & automatically generated files #
 #################################################
-/composer.lock
-/phpunit.xml
-/phpcs.xml
-/vendor
-/build
-/storage
-/.phpunit.result.cache
+composer.lock
+phpunit.xml
+phpcs.xml
+vendor
+storage
+*.log
+.phpunit.result.cache
 
 # IDE and editor specific files #
 #################################
-/nbproject
-/.idea
-/.vscode
+nbproject
+.idea
+.vscode
 
 # OS generated files #
 ######################
