@@ -70,7 +70,7 @@ class LogzioHandlerTest extends TestCase
     public function testItShouldHandleARecord()
     {
         $client = $this->createMock(Client::class);
-        $client->expects($this->once())->method('sendAsync');
+        $client->expects($this->once())->method('send');
 
         $handler = new Handler('debug', false, ['token' => 'abc', 'http_client' => $client]);
         $handler->handle($this->logRecord());
@@ -84,7 +84,7 @@ class LogzioHandlerTest extends TestCase
     public function testItShouldHandleBatch()
     {
         $client = $this->createMock(Client::class);
-        $client->expects($this->once())->method('sendAsync');
+        $client->expects($this->once())->method('send');
 
         $handler = new Handler('notice', false, ['token' => 'abc', 'http_client' => $client]);
         $handler->handleBatch([

@@ -9,7 +9,7 @@
     <arg value="p"/>
     <arg name="colors"/>
 
-    <rule ref="PSR2"/>
+    <rule ref="PSR12"/>
     <rule ref="Generic.PHP.DeprecatedFunctions"/>
     <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
 

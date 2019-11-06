@@ -64,7 +64,7 @@ return [
 	    'driver' => 'logzio',
 	    'name'   => 'channel-name',
 	    'token'  => 'logz-access-token',
-	    'type'   => 'https-bulk',
+	    'type'   => 'http-bulk',
 	    'ssl'    => true,
 	    'level'  => 'info',
 	    'bubble' => true,

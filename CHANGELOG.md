@@ -29,6 +29,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 
 
+## [1.0.2] - 2019-11-06
+
+### Added
+- Support `monolog/monolog:^2.0`
+
+### Changed
+- Change coding style from PSR-2 to PSR-12
+
+### Fixed
+- Logs wasn't send to Logz.io
+
+
+
+
 ## [1.0.1] - 2019-11-06
 
 ### Fixed
@@ -87,7 +101,8 @@ First release
 
 
 
-[Unreleased]: https://github.com/oanhnn/laravel-logzio/compare/v1.0.1...develop
+[Unreleased]: https://github.com/oanhnn/laravel-logzio/compare/v1.0.2...develop
+[1.0.2]:      https://github.com/oanhnn/laravel-logzio/compare/v1.0.1...v1.0.2
 [1.0.1]:      https://github.com/oanhnn/laravel-logzio/compare/v1.0.0...v1.0.1
 [1.0.0]:      https://github.com/oanhnn/laravel-logzio/compare/v0.2.0...v1.0.0
 [0.2.0]:      https://github.com/oanhnn/laravel-logzio/compare/v0.1.2...v0.2.0

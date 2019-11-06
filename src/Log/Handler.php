@@ -55,7 +55,7 @@ final class Handler extends AbstractProcessingHandler
     /**
      * {@inheritdoc}
      */
-    public function handleBatch(array $records)
+    public function handleBatch(array $records): void
     {
         $processed = [];
 
@@ -134,7 +134,7 @@ final class Handler extends AbstractProcessingHandler
         $headers = ['Content-Type: application/json'];
         $request = new Request('POST', $this->endpoint, $headers, $data);
 
-        $this->client->sendAsync($request);
+        $this->client->send($request);
     }
 
     /**
@@ -157,7 +157,7 @@ final class Handler extends AbstractProcessingHandler
     /**
      * {@inheritdoc}
      */
-    protected function write(array $record)
+    protected function write(array $record): void
     {
         $this->send($record['formatted']);
     }

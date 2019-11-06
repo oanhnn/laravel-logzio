@@ -18,7 +18,7 @@ class Formatter extends JsonFormatter
      * Datetime format for Logz.io
      * @see https://support.logz.io/hc/en-us/articles/210206885
      */
-    const DATETIME_FORMAT = 'c';
+    protected const DATETIME_FORMAT = 'c';
 
     /**
      * @param  int  $batchMode
