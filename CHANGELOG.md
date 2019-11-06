@@ -29,6 +29,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 
 
+## [1.0.1] - 2019-11-06
+
+### Fixed
+- Fix class name `ServiceProvider` in `composer.json`. Thank @cschalenborgh
+
+
+
+
 ## [1.0.0] - 2019-11-05
 
 ### Added
