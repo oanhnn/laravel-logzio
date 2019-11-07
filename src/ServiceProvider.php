@@ -10,7 +10,7 @@ use Monolog\Logger;
 /**
  * Class Service Provider
  *
- * @package     \Laravel\Logzio
+ * @package     Laravel\Logzio
  * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
  * @license     The MIT license
  */

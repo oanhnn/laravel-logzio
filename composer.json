@@ -42,16 +42,16 @@
   },
   "scripts": {
     "test": [
-      "@php vendor/bin/phpunit --testdox --testsuite=Tests"
+      "phpunit --testdox --testsuite=Tests"
     ],
     "coverage": [
-      "@php vendor/bin/phpunit --coverage-html storage/coverage --testsuite=Tests"
+      "phpunit --coverage-html storage/coverage --testsuite=Tests"
     ],
     "cs-check": [
-      "@php vendor/bin/phpcs --standard=phpcs.xml.dist"
+      "phpcs --standard=phpcs.xml.dist"
     ],
     "cs-fix": [
-      "@php vendor/bin/phpcbf --standard=phpcs.xml.dist"
+      "phpcbf --standard=phpcs.xml.dist"
     ]
   },
   "config": {
