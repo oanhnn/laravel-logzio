@@ -6,6 +6,13 @@ use Laravel\Logzio\Log\Formatter;
 use PHPUnit\Framework\TestCase;
 use Tests\Concerns\CanProvideLogRecord;
 
+/**
+ * Class LogzioFormatterTest
+ *
+ * @package     Tests\Unit
+ * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
+ * @license     The MIT license
+ */
 class LogzioFormatterTest extends TestCase
 {
     use CanProvideLogRecord;

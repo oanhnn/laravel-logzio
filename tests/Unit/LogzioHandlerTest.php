@@ -10,6 +10,13 @@ use PHPUnit\Framework\TestCase;
 use Tests\Concerns\CanProvideLogRecord;
 use Tests\Concerns\NonPublicAccessible;
 
+/**
+ * Class LogzioHandlerTest
+ *
+ * @package     Tests\Unit
+ * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
+ * @license     The MIT license
+ */
 class LogzioHandlerTest extends TestCase
 {
     use CanProvideLogRecord;

@@ -7,6 +7,13 @@ use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 use Laravel\Logzio\Log\Handler;
 use Monolog\Logger;
 
+/**
+ * Class Service Provider
+ *
+ * @package     \Laravel\Logzio
+ * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
+ * @license     The MIT license
+ */
 class ServiceProvider extends IlluminateServiceProvider
 {
     /**

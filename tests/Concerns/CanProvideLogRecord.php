@@ -5,6 +5,13 @@ namespace Tests\Concerns;
 use DateTime;
 use Monolog\Logger;
 
+/**
+ * Trait CanProvideLogRecord
+ *
+ * @package     Tests\Concerns
+ * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
+ * @license     The MIT license
+ */
 trait CanProvideLogRecord
 {
     /**
