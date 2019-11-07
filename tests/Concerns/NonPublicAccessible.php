@@ -18,6 +18,28 @@ use ReflectionProperty;
 trait NonPublicAccessible
 {
     /**
+     * Call protected/private method of a class.
+     *
+     * @param  object $obj     Instantiated object that we will run method on.
+     * @param  string $method  Method name to call
+     * @param  array  $params  Array of parameters to pass into method.
+     * @return mixed           Method return.
+     * @throws \InvalidArgumentException
+     * @throws \ReflectionException
+     */
+    protected function invokeNonPublicMethod($obj, string $method, ...$params)
+    {
+        if (!is_object($obj)) {
+            throw new InvalidArgumentException('The first argument must be an object.');
+        }
+
+        $ref = new ReflectionMethod($obj, $method);
+        $ref->setAccessible(true);
+
+        return $ref->invokeArgs($obj, $params);
+    }
+
+    /**
      * Get a non public property of an object
      *
      * @param  object $obj       Instantiated object that we will get property on.
@@ -56,27 +78,5 @@ trait NonPublicAccessible
         $ref = new ReflectionProperty(get_class($obj), $property);
         $ref->setAccessible(true);
         $ref->setValue($obj, $value);
-    }
-
-    /**
-     * Call protected/private method of a class.
-     *
-     * @param  object $obj     Instantiated object that we will run method on.
-     * @param  string $method  Method name to call
-     * @param  array  $params  Array of parameters to pass into method.
-     * @return mixed           Method return.
-     * @throws \InvalidArgumentException
-     * @throws \ReflectionException
-     */
-    protected function invokeNonPublicMethod($obj, string $method, ...$params)
-    {
-        if (!is_object($obj)) {
-            throw new InvalidArgumentException('The first argument must be an object.');
-        }
-
-        $ref = new ReflectionMethod($obj, $method);
-        $ref->setAccessible(true);
-
-        return $ref->invokeArgs($obj, $params);
     }
 }
