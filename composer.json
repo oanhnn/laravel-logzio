@@ -42,16 +42,16 @@
   },
   "scripts": {
     "test": [
-      "@php vendor/phpunit/phpunit/phpunit --testdox --testsuite=Tests"
+      "@php vendor/bin/phpunit --testdox --testsuite=Tests"
     ],
     "coverage": [
-      "@php vendor/phpunit/phpunit/phpunit --coverage-html storage/coverage --testsuite=Tests"
+      "@php vendor/bin/phpunit --coverage-html storage/coverage --testsuite=Tests"
     ],
     "cs-check": [
-      "@php vendor/squizlabs/php_codesniffer/bin/phpcs --standard=phpcs.xml.dist"
+      "@php vendor/bin/phpcs --standard=phpcs.xml.dist"
     ],
     "cs-fix": [
-      "@php vendor/squizlabs/php_codesniffer/bin/phpcbf --standard=phpcs.xml.dist"
+      "@php vendor/bin/phpcbf --standard=phpcs.xml.dist"
     ]
   },
   "config": {
