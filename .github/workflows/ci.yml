@@ -54,7 +54,7 @@ jobs:
           fetch-depth: 1
 
       - name: Setting up PHP
-        uses: actions/setup-php@v1
+        uses: shivammathur/setup-php@v1
         with:
           php-version: ${{ matrix.php }}
           extension-csv: curl
