@@ -57,8 +57,7 @@ jobs:
         uses: shivammathur/setup-php@v1
         with:
           php-version: ${{ matrix.php }}
-          extension-csv: curl
-          # ini-values-csv:
+          extension-csv: curl, mb-string, json, openssl
           coverage: xdebug
           pecl: false
 
