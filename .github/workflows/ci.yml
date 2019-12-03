@@ -28,15 +28,15 @@ jobs:
           - 6.4.*
           - 6.5.*
           - 6.6.*
-      include:
-        - php: 7.1
-          LARAVEL: 5.6.*
-        - php: 7.1
-          LARAVEL: 5.7.*
-        - php: 7.1
-          LARAVEL: 5.8.*
+        include:
+          - php: 7.1
+            LARAVEL: 5.6.*
+          - php: 7.1
+            LARAVEL: 5.7.*
+          - php: 7.1
+            LARAVEL: 5.8.*
 
-    runs_on: ubuntu-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
