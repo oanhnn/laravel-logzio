@@ -49,9 +49,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           extensions: curl, json, mbstring
-          coverage: pcov
-          ini-values: pcov.directory=src
-          tools: composer, phpunit, phpcs
+          tools: composer, phpunit
       - name: Get Composer Cache Directory
         id: composer-cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
@@ -62,15 +60,40 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
           restore-keys: ${{ runner.os }}-composer-
       - name: Install dependencies
-        run: composer install
+        run: composer update --no-interaction --no-suggest --prefer-dist ${{ matrix.COMPOSER_ARGS }}
       - name: Run PHPUnit
-        if: matrix.php != '7.4' || !contains(matrix.COMPOSER_ARGS, 'stable')
         run: php vendor/bin/phpunit
+
+  update-coverage:
+    name: '[PHP] Update test coverage'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setting up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+          extensions: curl, json, mbstring
+          coverage: pcov
+          ini-values: pcov.directory=src
+          tools: composer, phpunit
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
+      - name: Install dependencies
+        run: |
+          composer require --no-interaction --no-update "guzzlehttp/guzzle:^6.3"
+          composer update --no-interaction --no-suggest --prefer-dist ${{ matrix.COMPOSER_ARGS }}
       - name: Run PHPUnit and generate coverage
-        if: matrix.php == '7.4' && contains(matrix.COMPOSER_ARGS, 'stable')
         run: php -d pcov.enabled=1 vendor/bin/phpunit --coverage-clover=build/logs/clover.xml
       - name: Update test coverage
-        if: matrix.php == '7.4' && contains(matrix.COMPOSER_ARGS, 'stable')
         env:
           COVERALLS_RUN_LOCALLY: 1
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}

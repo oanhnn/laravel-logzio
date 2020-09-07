@@ -3,6 +3,7 @@
 namespace Laravel\Logzio\Log;
 
 use DateTimeInterface;
+use Monolog\Formatter\FormatterInterface;
 use Monolog\Formatter\JsonFormatter;
 
 /**
@@ -12,7 +13,7 @@ use Monolog\Formatter\JsonFormatter;
  * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
  * @license     The MIT license
  */
-class Formatter extends JsonFormatter
+class Formatter extends JsonFormatter implements FormatterInterface
 {
     /**
      * Datetime format for Logz.io
