@@ -29,7 +29,7 @@ jobs:
         run: phpcs --standard=phpcs.xml.dist
 
   run-tests:
-    name: '[PHP] Test PHP${{ matrix.php }} ${{ matrix.COMPOSER_ARGS }}'
+    name: '[PHP] Test with PHP${{ matrix.php }} and ${{ matrix.dependencies }} dependencies'
     strategy:
       matrix:
         php:
@@ -37,9 +37,9 @@ jobs:
           - 7.2
           - 7.3
           - 7.4
-        COMPOSER_ARGS:
-          - --prefer-lowest
-          - --prefer-stable
+        dependencies:
+          - lowest
+          - highest
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -60,10 +60,14 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
           restore-keys: ${{ runner.os }}-composer-
       - name: Fix PHPUnit 7.x don't support PHP7.4+
-        if: matrix.php == '7.4' && contains(matrix.COMPOSER_ARGS, 'lowest')
-        run: composer require --no-interaction --no-update --dev "phpunit/phpunit:^8.0"
-      - name: Install dependencies
-        run: composer update --no-interaction --no-suggest --prefer-dist ${{ matrix.COMPOSER_ARGS }}
+        if: matrix.php == '7.4' && matrix.dependencies == 'lowest'
+        run: composer require --no-interaction --no-update --dev "phpunit/phpunit:^8.5"
+      - name: Install lowest dependencies with composer
+        if: matrix.dependencies == 'lowest'
+        run: ./tools/composer update --no-ansi --no-interaction --no-progress --no-suggest --prefer-lowest
+      - name: Install highest dependencies with composer
+        if: matrix.dependencies == 'highest'
+        run: ./tools/composer update --no-ansi --no-interaction --no-progress --no-suggest
       - name: Run PHPUnit
         run: php vendor/bin/phpunit
 
@@ -93,7 +97,7 @@ jobs:
       - name: Install dependencies
         run: |
           composer require --no-interaction --no-update "guzzlehttp/guzzle:^6.3"
-          composer update --no-interaction --no-suggest --prefer-dist ${{ matrix.COMPOSER_ARGS }}
+          composer update --no-interaction --no-suggest --prefer-dist
       - name: Run PHPUnit and generate coverage
         run: php -d pcov.enabled=1 vendor/bin/phpunit --coverage-clover=build/logs/clover.xml
       - name: Update test coverage
