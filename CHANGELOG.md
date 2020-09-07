@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased] - YYYY-MM-DD
 
 ### Added
-- Add support Laravel 6.5
+- Nothing
 
 ### Changed
 - Nothing
@@ -25,6 +25,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Security
 - Nothing
+
+
+
+
+
+## [1.1.0] - 2020-09-07
+
+### Added
+- Add support Laravel 6.x, 7.x and 8.x
+
+### Changed
+- TravisCI to GitHub Workflow
+
 
 
 
@@ -101,7 +114,8 @@ First release
 
 
 
-[Unreleased]: https://github.com/oanhnn/laravel-logzio/compare/v1.0.2...develop
+[Unreleased]: https://github.com/oanhnn/laravel-logzio/compare/v1.1.0...develop
+[1.1.0]:      https://github.com/oanhnn/laravel-logzio/compare/v1.0.2...v1.1.0
 [1.0.2]:      https://github.com/oanhnn/laravel-logzio/compare/v1.0.1...v1.0.2
 [1.0.1]:      https://github.com/oanhnn/laravel-logzio/compare/v1.0.0...v1.0.1
 [1.0.0]:      https://github.com/oanhnn/laravel-logzio/compare/v0.2.0...v1.0.0
