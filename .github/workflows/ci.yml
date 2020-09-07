@@ -59,6 +59,9 @@ jobs:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
           restore-keys: ${{ runner.os }}-composer-
+      - name: Fix PHPUnit 7.x don't support PHP7.4+
+        if: matrix.php == '7.4' && contains(matrix.COMPOSER_ARGS, 'lowest')
+        run: composer require --no-interaction --no-update --dev "phpunit/phpunit:^8.0"
       - name: Install dependencies
         run: composer update --no-interaction --no-suggest --prefer-dist ${{ matrix.COMPOSER_ARGS }}
       - name: Run PHPUnit
