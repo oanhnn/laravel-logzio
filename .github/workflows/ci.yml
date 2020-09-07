@@ -29,7 +29,7 @@ jobs:
         run: phpcs --standard=phpcs.xml.dist
 
   run-tests:
-    name: '[PHP] Test PHP${{ matrix.php }} - Laravel v${{ matrix.LARAVEL }} ${{ matrix.COMPOSER_ARGS }}'
+    name: '[PHP] Test PHP${{ matrix.php }} ${{ matrix.COMPOSER_ARGS }}'
     strategy:
       matrix:
         php:
@@ -37,25 +37,9 @@ jobs:
           - 7.2
           - 7.3
           - 7.4
-        LARAVEL:
-          - 5.6.*
-          - 5.7.*
-          - 5.8.*
-          - 6.*
-          - 7.*
-          - 8.*
         COMPOSER_ARGS:
           - --prefer-lowest
           - --prefer-stable
-        exclude:
-          - php: 7.1
-            LARAVEL: 6.*
-          - php: 7.1
-            LARAVEL: 7.*
-          - php: 7.1
-            LARAVEL: 8.*
-          - php: 7.2
-            LARAVEL: 8.*
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -64,7 +48,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: curl, dom, json, mbstring, openssl
+          extensions: curl, json, mbstring
           coverage: pcov
           ini-values: pcov.directory=src
           tools: composer, phpunit, phpcs
@@ -77,14 +61,16 @@ jobs:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
           restore-keys: ${{ runner.os }}-composer-
-      - name: Install composer dependencies
-        run: |
-          composer require --no-interaction --no-update "illuminate/support:${{ matrix.LARAVEL }}"
-          composer update --no-interaction --no-suggest --prefer-dist ${{ matrix.COMPOSER_ARGS }}
+      - name: Install dependencies
+        run: composer install
       - name: Run PHPUnit
+        if: matrix.php != '7.4' || !contains(matrix.COMPOSER_ARGS, 'stable')
+        run: php vendor/bin/phpunit
+      - name: Run PHPUnit and generate coverage
+        if: matrix.php == '7.4' && contains(matrix.COMPOSER_ARGS, 'stable')
         run: php -d pcov.enabled=1 vendor/bin/phpunit --coverage-clover=build/logs/clover.xml
       - name: Update test coverage
-        if: matrix.php == '7.4' && matrix.LARAVEL == '7.*' && contains(matrix.COMPOSER_ARGS, 'stable')
+        if: matrix.php == '7.4' && contains(matrix.COMPOSER_ARGS, 'stable')
         env:
           COVERALLS_RUN_LOCALLY: 1
           COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
