@@ -48,7 +48,7 @@ class LogzioHandlerTest extends TestCase
         $handler = new Handler('debug', true, $options);
         $endpoint = $this->getNonPublicProperty($handler, 'endpoint');
 
-        $this->assertIsString($endpoint);
+        $this->assertTrue(is_string(($endpoint));
         $this->assertSame($expected, $endpoint);
     }
 
