@@ -60,14 +60,14 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
           restore-keys: ${{ runner.os }}-composer-
       - name: Fix PHPUnit 7.x don't support PHP7.4+
-        if: matrix.php == '7.4' && matrix.dependencies == 'lowest'
         run: composer require --no-interaction --no-update --dev "phpunit/phpunit:^8.5"
+        if: matrix.php == '7.4' && matrix.dependencies == 'lowest'
       - name: Install lowest dependencies with composer
+        run: composer update --no-ansi --no-interaction --no-progress --no-suggest --prefer-lowest
         if: matrix.dependencies == 'lowest'
-        run: ./tools/composer update --no-ansi --no-interaction --no-progress --no-suggest --prefer-lowest
       - name: Install highest dependencies with composer
+        run: composer update --no-ansi --no-interaction --no-progress --no-suggest
         if: matrix.dependencies == 'highest'
-        run: ./tools/composer update --no-ansi --no-interaction --no-progress --no-suggest
       - name: Run PHPUnit
         run: php vendor/bin/phpunit
 
