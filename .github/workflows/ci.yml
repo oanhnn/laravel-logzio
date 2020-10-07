@@ -44,66 +44,63 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Setting up PHP
+      - name: Setup cache environment
+        id: cache-env
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: curl, json, mbstring
+          key: cache-v1 # can be any string, change to clear the extension cache.
+      - name: Cache extensions
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.cache-env.outputs.dir }}
+          key: ${{ steps.cache-env.outputs.key }}
+          restore-keys: ${{ steps.cache-env.outputs.key }}
+      - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           extensions: curl, json, mbstring
-          tools: composer, phpunit
-      - name: Get Composer Cache Directory
+          coverage: xdebug
+          tools: composer
+      - name: Setup cache dependencies
         id: composer-cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
       - name: Cache dependencies
         uses: actions/cache@v2
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
+          # Use composer.json for key, if composer.lock is not committed.
+          key: ${{ runner.os }}-php-${{ matrix.php }}-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-php-${{ matrix.php }}-${{ matrix.dependencies }}-
       - name: Fix PHPUnit 7.x don't support PHP7.4+
         run: composer require --no-interaction --no-update --dev "phpunit/phpunit:^8.5"
         if: matrix.php == '7.4' && matrix.dependencies == 'lowest'
       - name: Install lowest dependencies with composer
-        run: composer update --no-ansi --no-interaction --no-progress --no-suggest --prefer-lowest
+        run: composer update  --no-interaction --no-progress --no-suggest --prefer-lowest
         if: matrix.dependencies == 'lowest'
       - name: Install highest dependencies with composer
-        run: composer update --no-ansi --no-interaction --no-progress --no-suggest
+        run: composer update  --no-interaction --no-progress --no-suggest
         if: matrix.dependencies == 'highest'
       - name: Run PHPUnit
-        run: php vendor/bin/phpunit
+        run: php vendor/bin/phpunit --verbose --stderr --coverage-text --coverage-clover=build/logs/clover.xml
+      - name: Upload coverage results to Coveralls
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COVERALLS_PARALLEL: true
+          COVERALLS_FLAG_NAME: php-${{ matrix.php }}
+        run: |
+          composer global require php-coveralls/php-coveralls
+          php-coveralls --coverage_clover=build/logs/clover.xml -vvv
+        if: matrix.dependencies == 'highest'
 
-  update-coverage:
-    name: '[PHP] Update test coverage'
+  coveralls-finish:
+    needs: [run-tests]
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setting up PHP
-        uses: shivammathur/setup-php@v2
+      - name: Coveralls Finished
+        uses: coverallsapp/github-action@master
         with:
-          php-version: 7.4
-          extensions: curl, json, mbstring
-          coverage: pcov
-          ini-values: pcov.directory=src
-          tools: composer, phpunit
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - name: Cache dependencies
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
-      - name: Install dependencies
-        run: |
-          composer require --no-interaction --no-update "guzzlehttp/guzzle:^6.3"
-          composer update --no-interaction --no-suggest --prefer-dist
-      - name: Run PHPUnit and generate coverage
-        run: php -d pcov.enabled=1 vendor/bin/phpunit --coverage-clover=build/logs/clover.xml
-      - name: Update test coverage
-        env:
-          COVERALLS_RUN_LOCALLY: 1
-          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-        run: |
-          composer require php-coveralls/php-coveralls
-          php vendor/bin/php-coveralls --coverage_clover=build/logs/clover.xml -v
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel-finished: true
