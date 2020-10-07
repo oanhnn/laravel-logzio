@@ -83,8 +83,12 @@ jobs:
       - name: Install highest dependencies with composer
         run: composer update  --no-interaction --no-progress --no-suggest
         if: matrix.dependencies == 'highest'
-      - name: Run PHPUnit
+      - name: Run test
+        run: php vendor/bin/phpunit
+        if: matrix.dependencies == 'lowest'
+      - name: Run test and generate coverage
         run: php vendor/bin/phpunit --verbose --stderr --coverage-text --coverage-clover=build/logs/clover.xml
+        if: matrix.dependencies == 'highest'
       - name: Upload coverage results to Coveralls
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
