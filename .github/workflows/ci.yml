@@ -1,17 +1,6 @@
 name: CI
 
-on:
-  push:
-    branches:
-      - master
-      - develop
-      - releases/*
-    tags:
-      - "*"
-  pull_request:
-    branches:
-      - master
-      - develop
+on: [push, pull_request]
 
 jobs:
   check-coding-style:
@@ -44,19 +33,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
       - name: Setup cache environment
-        id: cache-env
+        id: cache-extensions
         uses: shivammathur/cache-extensions@v1
         with:
           php-version: ${{ matrix.php }}
           extensions: curl, json, mbstring
           key: cache-v1 # can be any string, change to clear the extension cache.
+
       - name: Cache extensions
         uses: actions/cache@v2
         with:
-          path: ${{ steps.cache-env.outputs.dir }}
-          key: ${{ steps.cache-env.outputs.key }}
-          restore-keys: ${{ steps.cache-env.outputs.key }}
+          path: ${{ steps.cache-extensions.outputs.dir }}
+          key: ${{ steps.cache-extensions.outputs.key }}
+          restore-keys: ${{ steps.cache-extensions.outputs.key }}
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -64,31 +56,34 @@ jobs:
           extensions: curl, json, mbstring
           coverage: xdebug
           tools: composer
+
       - name: Setup cache dependencies
-        id: composer-cache
+        id: cache-composer
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
       - name: Cache dependencies
         uses: actions/cache@v2
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
+          path: ${{ steps.cache-composer.outputs.dir }}
           # Use composer.json for key, if composer.lock is not committed.
           key: ${{ runner.os }}-php-${{ matrix.php }}-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}
           restore-keys: ${{ runner.os }}-php-${{ matrix.php }}-${{ matrix.dependencies }}-
+
       - name: Fix PHPUnit 7.x don't support PHP7.4+
         run: composer require --no-interaction --no-update --dev "phpunit/phpunit:^8.5"
         if: matrix.php == '7.4' && matrix.dependencies == 'lowest'
+
       - name: Install lowest dependencies with composer
         run: composer update  --no-interaction --no-progress --no-suggest --prefer-lowest
         if: matrix.dependencies == 'lowest'
+
       - name: Install highest dependencies with composer
         run: composer update  --no-interaction --no-progress --no-suggest
         if: matrix.dependencies == 'highest'
-      - name: Run test
-        run: php vendor/bin/phpunit
-        if: matrix.dependencies == 'lowest'
-      - name: Run test and generate coverage
+
+      - name: Run PHPUnit
         run: php vendor/bin/phpunit --verbose --stderr --coverage-text --coverage-clover=build/logs/clover.xml
-        if: matrix.dependencies == 'highest'
+
       - name: Upload coverage results to Coveralls
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
