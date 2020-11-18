@@ -17,9 +17,9 @@ Easy integrate [Logz.io](https://logz.io) into PHP and [Laravel](https://laravel
 ## Requirements
 
 * php >=7.1.3
-* Laravel 5.6+ (when using with Laravel)
+* Laravel 6.0+ (when using with Laravel)
 
-> Laravel 6.0+ required php 7.2+
+> We tested with Laravel 6.0+ and php 7.2+ . But it can working with Laravel 5.6+ and php >= 7.1.3
 
 ## Installation
 
