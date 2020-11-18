@@ -9,7 +9,7 @@ use Monolog\Formatter\JsonFormatter;
 /**
  * Class Formatter
  *
- * @package     Laravel\Logzio\Log
+ * @package     oanhnn/laravel-logzio
  * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
  * @license     The MIT license
  */

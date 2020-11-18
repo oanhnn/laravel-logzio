@@ -8,7 +8,7 @@ use Orchestra\Testbench\TestCase as Testbench;
 /**
  * Class TestCase
  *
- * @package     Tests
+ * @package     oanhnn/laravel-logzio
  * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
  * @license     The MIT license
  */

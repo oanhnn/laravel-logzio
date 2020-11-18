@@ -8,7 +8,7 @@ use Monolog\Logger;
 /**
  * Trait CanProvideLogRecord
  *
- * @package     Tests\Concerns
+ * @package     oanhnn/laravel-logzio
  * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
  * @license     The MIT license
  */

@@ -13,7 +13,7 @@ use Tests\Concerns\NonPublicAccessible;
 /**
  * Class LogzioHandlerTest
  *
- * @package     Tests\Unit
+ * @package     oanhnn/laravel-logzio
  * @author      Oanh Nguyen <oanhnn.bk@gmail.com>
  * @license     The MIT license
  */
