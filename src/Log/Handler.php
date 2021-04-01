@@ -151,6 +151,7 @@ final class Handler extends AbstractProcessingHandler
             'eu', // Europe (Frankfurt) AWS
             'nl', // West Europe (Netherlands) Azure
             'wa', // West US 2 (Washington) Azure
+            'uk' // EU West (AWS)
         ]);
     }
 
