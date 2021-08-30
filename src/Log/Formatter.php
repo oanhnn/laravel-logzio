@@ -15,19 +15,16 @@ use Monolog\Formatter\JsonFormatter;
  */
 class Formatter extends JsonFormatter implements FormatterInterface
 {
-    /**
-     * Datetime format for Logz.io
-     * @see https://support.logz.io/hc/en-us/articles/210206885
-     */
-    protected const DATETIME_FORMAT = 'c';
+    private $timestampFormat;
 
     /**
      * @param  int  $batchMode
      * @param  bool $appendNewline
      */
-    public function __construct(int $batchMode = self::BATCH_MODE_NEWLINES, bool $appendNewline = true)
+    public function __construct(string $timestampFormat, int $batchMode = self::BATCH_MODE_NEWLINES, bool $appendNewline = true)
     {
         parent::__construct($batchMode, $appendNewline);
+        $this->timestampFormat = $timestampFormat;
     }
 
     /**
@@ -39,7 +36,7 @@ class Formatter extends JsonFormatter implements FormatterInterface
     public function format(array $record): string
     {
         if (isset($record["datetime"]) && ($record["datetime"] instanceof DateTimeInterface)) {
-            $record["@timestamp"] = $record["datetime"]->format(self::DATETIME_FORMAT);
+            $record["@timestamp"] = $record["datetime"]->format($this->timestampFormat);
 
             unset($record["datetime"]);
         }

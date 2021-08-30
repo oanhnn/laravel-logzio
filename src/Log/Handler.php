@@ -22,6 +22,10 @@ use Monolog\Logger;
  */
 final class Handler extends AbstractProcessingHandler
 {
+    // Default timestamp format matches Logz.io expected format:
+    // https://support.logz.io/hc/en-us/articles/210206885
+    const TIMESTAMP_FORMAT = 'Y-m-d\TH:i:s.v\Z';
+
     /**
      * The HTTP client
      *
@@ -120,7 +124,7 @@ final class Handler extends AbstractProcessingHandler
      */
     protected function getDefaultFormatter(): FormatterInterface
     {
-        return new Formatter();
+        return new Formatter($options['timestamp_format'] ?? self::TIMESTAMP_FORMAT);
     }
 
     /**

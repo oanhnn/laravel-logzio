@@ -38,6 +38,7 @@ class ServiceProvider extends IlluminateServiceProvider
             //     'type' => 'http-bulk',
             //     'ssl' => true,
             //     'region' => '',
+            //     'timestamp_format' => '',
             // ];
             $handler = new Handler(
                 $config['level'] ?? 'warning',

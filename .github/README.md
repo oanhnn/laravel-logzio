@@ -61,14 +61,15 @@ In `config/logging.php` file, config you log with driver `logzio`
 return [
     // ...
 	'custom' => [
-	    'driver' => 'logzio',
-	    'name'   => 'channel-name',
-	    'token'  => 'logz-access-token',
-	    'type'   => 'http-bulk',
-	    'ssl'    => true,
-	    'level'  => 'info',
-	    'bubble' => true,
-	    'region' => 'eu', // leave empty for default region
+	    'driver'           => 'logzio',
+	    'name'             => 'channel-name',
+	    'token'            => 'logz-access-token',
+	    'type'             => 'http-bulk',
+	    'ssl'              => true,
+	    'level'            => 'info',
+	    'bubble'           => true,
+	    'region'           => 'eu', // leave empty for default region
+	    'timestamp_format' => '', // leave empty for default format (requires UTC time)
 	],
 	// ...
 ];
