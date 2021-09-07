@@ -39,6 +39,11 @@ final class Handler extends AbstractProcessingHandler
     private $endpoint;
 
     /**
+     * @var string
+     */
+    private $timestampFormat;
+
+    /**
      * @param  int|string $level   The minimum logging level to trigger this handler.
      * @param  bool       $bubble  Whether or not messages that are handled should bubble up the stack.
      * @param  array      $options Logz.io client options
@@ -52,6 +57,7 @@ final class Handler extends AbstractProcessingHandler
 
         $this->client = $this->buildHttpClient($options);
         $this->endpoint = $this->buildEndpoint($options);
+        $this->timestampFormat = $options['timestamp_format'] ?? self::TIMESTAMP_FORMAT;
 
         parent::__construct($level, $bubble);
     }
@@ -124,7 +130,7 @@ final class Handler extends AbstractProcessingHandler
      */
     protected function getDefaultFormatter(): FormatterInterface
     {
-        return new Formatter($options['timestamp_format'] ?? self::TIMESTAMP_FORMAT);
+        return new Formatter($this->timestampFormat);;
     }
 
     /**
