@@ -22,6 +22,10 @@ use Monolog\Logger;
  */
 final class Handler extends AbstractProcessingHandler
 {
+    // Default timestamp format matches Logz.io expected format:
+    // https://support.logz.io/hc/en-us/articles/210206885
+    const TIMESTAMP_FORMAT = 'Y-m-d\TH:i:s.v\Z';
+
     /**
      * The HTTP client
      *
@@ -33,6 +37,11 @@ final class Handler extends AbstractProcessingHandler
      * @var string
      */
     private $endpoint;
+
+    /**
+     * @var string
+     */
+    private $timestampFormat;
 
     /**
      * @param  int|string $level   The minimum logging level to trigger this handler.
@@ -48,6 +57,7 @@ final class Handler extends AbstractProcessingHandler
 
         $this->client = $this->buildHttpClient($options);
         $this->endpoint = $this->buildEndpoint($options);
+        $this->timestampFormat = $options['timestamp_format'] ?? self::TIMESTAMP_FORMAT;
 
         parent::__construct($level, $bubble);
     }
@@ -120,7 +130,7 @@ final class Handler extends AbstractProcessingHandler
      */
     protected function getDefaultFormatter(): FormatterInterface
     {
-        return new Formatter();
+        return new Formatter($this->timestampFormat);;
     }
 
     /**
